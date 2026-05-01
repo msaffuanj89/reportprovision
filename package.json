@@ -5,5 +5,5 @@
   "scripts": {
     "dev": "vercel dev"
   },
-  "dependencies": {}
+  "dependencies": {"express": "^4.18.2"}
 }

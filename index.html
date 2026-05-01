@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Report Pro Vision V12 Clean</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+<div id="welcomePage" class="welcomePage">
+  <div class="welcomeCard">
+    <img src="report-pro-logo.png" alt="Report Pro Vision Logo" class="welcomeLogo">
+    <p class="welcomeCredit">
+      <span class="creditLine line1">oleh</span><br>
+      <span class="creditLine line2">Muhammad Saffuan bin Jaffar</span><br>
+      <span class="creditLine line3">IPG Kampus Pulau Pinang</span>
+    </p>
+    <button id="enterAppBtn" class="enterAppBtn">Masuk ke Apps</button>
+  </div>
+</div>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="appHeader">
+      <h1>Report Pro Max V12</h1>
+      <p>Seamless mode. Apps auto pilih AI Vision atau mode offline tanpa popup.</p><div id="aiModeStatus" class="aiModeStatus">Checking AI mode...</div>
+    </div>
+
+    <div class="stepBox">
+      <div class="stepTitle">1. Maklumat Asas</div>
+
+      <label>Tajuk Laporan</label>
+      <input id="title" placeholder="Contoh: Laporan Program Sekolah Pengajar">
+
+      <label>Institusi</label>
+      <input id="institution" placeholder="Contoh: IPG KAMPUS PULAU PINANG">
+
+      <label>Tarikh</label>
+      <input id="date" type="date">
+
+      <label>Program</label>
+      <input id="program" placeholder="Contoh: Karnival Matematik">
+
+      <label>Sekolah</label>
+      <input id="school" placeholder="Contoh: SK Balik Pulau">
+    </div>
+
+    <div class="stepBox">
+      <div class="stepTitle">2. Upload Gambar</div>
+      <div class="modePill">Visual First Mode</div>
+      <p class="hint">AI akan huraikan apa yang betul-betul kelihatan dalam gambar. Catatan ringkas optional boleh bantu jika gambar susah difahami.</p>
+
+      <label>Gambar 1</label>
+      <input id="img1" type="file" accept="image/*">
+      
+      <label>Description Gambar 1</label>
+      <textarea id="desc1" placeholder="AI akan generate description gambar 1..."></textarea>
+
+      <label>Gambar 2</label>
+      <input id="img2" type="file" accept="image/*">
+      
+      <label>Description Gambar 2</label>
+      <textarea id="desc2" placeholder="AI akan generate description gambar 2..."></textarea>
+
+      <label>Gambar 3</label>
+      <input id="img3" type="file" accept="image/*">
+      
+      <label>Description Gambar 3</label>
+      <textarea id="desc3" placeholder="AI akan generate description gambar 3..."></textarea>
+
+      <label>Gambar 4</label>
+      <input id="img4" type="file" accept="image/*">
+      
+      <label>Description Gambar 4</label>
+      <textarea id="desc4" placeholder="AI akan generate description gambar 4..."></textarea>
+    </div>
+
+    <div class="stickyActions">
+      <button onclick="aiGenerate()">AI Generate Laporan</button>
+      <button onclick="updateReport()">Update Preview</button>
+    </div>
+
+    <details class="stepBox reportDetails" open>
+      <summary>3. Isi Laporan Boleh Edit</summary>
+
+      <label>Isu</label>
+      <textarea id="issue" placeholder="AI akan jana isu berdasarkan Program dan gambar..."></textarea>
+
+      <label>1.0 Pengenalan</label>
+      <textarea id="intro"></textarea>
+
+      <label>2.0 Objektif PLC</label>
+      <textarea id="objective"></textarea>
+
+      <label>3.0 Sasaran dan Pencapaian Output</label>
+      <textarea id="target"></textarea>
+
+      <label>4.0 Status Pelaksanaan Program</label>
+      <textarea id="status"></textarea>
+
+      <label>5.0 Pencapaian Outcome</label>
+      <textarea id="outcome"></textarea>
+
+      <label>Caption Utama Gambar Dokumentasi</label>
+      <textarea id="caption" placeholder="Optional. Boleh kosongkan jika tidak perlu."></textarea>
+    </details>
+
+    <div class="btns">
+      <button onclick="saveDraft()">Save Draft</button>
+      <button onclick="loadDraft()">Load Draft</button>
+      <button class="pdf" onclick="downloadPDF()">Generate PDF</button>
+      <button class="drive" onclick="openDrive()">Upload Drive</button>
+    </div>
+  </aside>
+
+  <main class="previewArea">
+    <div class="phoneTabs">
+      <button onclick="scrollToPage(1)">Cover</button>
+      <button onclick="scrollToPage(2)">Isi</button>
+      <button onclick="scrollToPage(3)">Gambar</button>
+    </div>
+
+    <div id="pdfArea">
+      <section class="page coverPage" id="page1">
+        <div class="topLine"></div>
+        <div class="dotPattern"></div>
+        <div class="coverShape shapeNavy"></div>
+        <div class="coverShape shapeTeal"></div>
+        <div class="coverShape shapeYellow"></div>
+        <div class="coverShape shapeGreen"></div>
+        <div class="thinFrame"></div>
+
+        <div class="coverText">
+          <div class="smallLabel">LAPORAN RASMI</div>
+          <h1 id="cTitle"></h1>
+          <div class="accentLine"></div>
+          <h2 id="cInstitution"></h2>
+          <div class="datePill">
+            <span class="calendarIcon">▦</span>
+            <span id="cDate"></span>
+          </div>
+        </div>
+
+        <div class="valueBar">
+          <div><b>BERILMU</b><span>Memperkasa Pendidikan</span></div>
+          <div><b>BERKUALITI</b><span>Melahirkan Pendidik Holistik</span></div>
+          <div><b>BERINOVASI</b><span>Menerajui Kecemerlangan Pendidikan</span></div>
+        </div>
+        <span class="pageNum">1</span>
+      </section>
+
+      <section class="page contentPage" id="page2">
+        <div class="contentHeader">
+          <div>
+            <h2>Isi Kandungan Laporan</h2>
+            <p id="metaLine"></p>
+          </div>
+          <div class="miniBadge">REPORT PRO</div>
+        </div>
+
+        <div class="infoBox">
+          <b>IPGK PULAU PINANG</b><br>
+          <b>Program :</b> <span id="rProgram"></span><br>
+          <b>Sekolah :</b> <span id="rSchool"></span><br>
+          <b>Isu :</b> <span id="rIssue"></span>
+        </div>
+
+        <div class="reportGrid">
+          <div class="sectionCard wide">
+            <h3>1.0 Pengenalan</h3>
+            <p id="rIntro" contenteditable="true"></p>
+          </div>
+          <div class="sectionCard">
+            <h3>2.0 Objektif PLC</h3>
+            <p id="rObjective" contenteditable="true"></p>
+          </div>
+          <div class="sectionCard">
+            <h3>3.0 Sasaran dan Pencapaian Output</h3>
+            <p id="rTarget" contenteditable="true"></p>
+          </div>
+          <div class="sectionCard">
+            <h3>4.0 Status Pelaksanaan Program</h3>
+            <p id="rStatus" contenteditable="true"></p>
+          </div>
+          <div class="sectionCard">
+            <h3>5.0 Pencapaian Outcome</h3>
+            <p id="rOutcome" contenteditable="true"></p>
+          </div>
+        </div>
+        <span class="pageNum">2</span>
+      </section>
+
+      <section class="page photoPage" id="page3">
+        <div class="photoHeader">
+          <h2>Gambar Dokumentasi Program</h2>
+          <p id="photoSub"></p>
+        </div>
+
+        <div class="photoGrid">
+          <div class="photoCard">
+            <div class="photo landscape"><img id="p1"><span>Gambar 1</span></div>
+            <div class="photoTools">Drag gambar untuk adjust. Zoom <input type="range" id="z1" min="1" max="2.4" step="0.05" value="1"></div>
+            <div class="photoDesc" id="rDesc1" contenteditable="true"></div>
+          </div>
+          <div class="photoCard">
+            <div class="photo landscape"><img id="p2"><span>Gambar 2</span></div>
+            <div class="photoTools">Drag gambar untuk adjust. Zoom <input type="range" id="z2" min="1" max="2.4" step="0.05" value="1"></div>
+            <div class="photoDesc" id="rDesc2" contenteditable="true"></div>
+          </div>
+          <div class="photoCard">
+            <div class="photo landscape"><img id="p3"><span>Gambar 3</span></div>
+            <div class="photoTools">Drag gambar untuk adjust. Zoom <input type="range" id="z3" min="1" max="2.4" step="0.05" value="1"></div>
+            <div class="photoDesc" id="rDesc3" contenteditable="true"></div>
+          </div>
+          <div class="photoCard">
+            <div class="photo landscape"><img id="p4"><span>Gambar 4</span></div>
+            <div class="photoTools">Drag gambar untuk adjust. Zoom <input type="range" id="z4" min="1" max="2.4" step="0.05" value="1"></div>
+            <div class="photoDesc" id="rDesc4" contenteditable="true"></div>
+          </div>
+        </div>
+
+        <div class="captionBox" id="rCaption" contenteditable="true"></div>
+        <span class="pageNum">3</span>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

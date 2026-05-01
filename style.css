@@ -1,0 +1,940 @@
+*{box-sizing:border-box}
+body{margin:0;background:#d1d5db;font-family:Arial,Helvetica,sans-serif;color:#0f172a}
+.app{display:grid;grid-template-columns:390px 1fr;min-height:100vh}
+.sidebar{background:#0b1220;color:white;padding:18px;height:100vh;overflow:auto;position:sticky;top:0}
+.appHeader{background:linear-gradient(135deg,#08223f,#0f7f8f);padding:18px;border-radius:18px;margin-bottom:14px}
+.sidebar h1{margin:0;font-size:29px}
+.sidebar p{color:#e2e8f0;margin:6px 0 0;font-size:14px;line-height:1.35}
+.stepBox{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:14px;margin-bottom:14px}
+.stepTitle, summary{font-weight:900;font-size:16px;color:#facc15;margin-bottom:8px;cursor:pointer}
+.modePill{background:#facc15;color:#422006;display:inline-block;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:900;margin:4px 0 8px}
+.hint{font-size:12px!important;color:#cbd5e1!important;margin:0 0 10px!important}
+label{display:block;font-weight:800;font-size:13px;margin:12px 0 6px}
+input,textarea{width:100%;border:0;border-radius:12px;padding:12px;font-size:15px;background:#fff;color:#0f172a}
+textarea{min-height:78px;resize:vertical}
+.sidebar input[type=file]{background:white;margin-bottom:6px;padding:10px;font-size:13px}
+.stickyActions{position:sticky;bottom:0;z-index:5;background:#0b1220;padding:10px 0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stickyActions button{min-height:50px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;padding-bottom:20px}
+button{border:0;border-radius:13px;padding:13px;font-weight:900;background:#38bdf8;color:#082f49;cursor:pointer;font-size:14px}
+button:disabled{opacity:.55;cursor:not-allowed}
+.pdf{grid-column:span 2;background:#facc15;color:#422006}
+.drive{grid-column:span 2;background:#22c55e;color:#052e16}
+.previewArea{padding:30px;overflow:auto}
+.phoneTabs{display:none}
+#pdfArea{width:1123px;margin:auto}
+.page{width:1123px;height:794px;background:white;position:relative;overflow:hidden;margin:0 auto 18px;box-shadow:0 8px 28px rgba(0,0,0,.25)}
+.pageNum{position:absolute;right:28px;bottom:22px;font-size:12px;font-weight:800;color:#334155}
+
+/* COVER */
+.coverPage{background:linear-gradient(135deg,#fff 0%,#fff 58%,#f8fafc 100%)}
+.thinFrame{position:absolute;inset:20px;border:2px solid #0b2a4a;border-radius:8px;opacity:.9}
+.topLine{position:absolute;top:0;left:78px;width:240px;height:16px;background:linear-gradient(90deg,#0b2a4a 0 48%,transparent 48% 55%,#6b8f3a 55% 100%);transform:skewX(-25deg)}
+.dotPattern{position:absolute;right:300px;top:28px;width:190px;height:90px;background-image:radial-gradient(#cbd5e1 2px,transparent 2px);background-size:14px 14px;opacity:.65}
+.coverShape{position:absolute}
+.shapeNavy{right:-115px;top:-80px;width:420px;height:920px;background:#08223f;transform:skewX(-34deg)}
+.shapeTeal{right:170px;top:0;width:120px;height:365px;background:#0f7f8f;transform:skewX(-34deg);box-shadow:0 18px 38px rgba(0,0,0,.2)}
+.shapeYellow{right:80px;bottom:-80px;width:150px;height:430px;background:#f6c533;transform:skewX(-34deg)}
+.shapeGreen{left:-80px;bottom:-140px;width:370px;height:250px;background:#7da85a;transform:skewX(-34deg)}
+.coverText{position:absolute;left:80px;top:145px;width:720px}
+.smallLabel{letter-spacing:8px;font-weight:800;color:#6b8f3a;font-size:20px;margin-bottom:12px}
+.coverText h1{font-size:76px;line-height:.95;margin:0;text-transform:uppercase;color:#071f3d;font-weight:950;letter-spacing:-2px}
+.accentLine{width:190px;height:8px;background:#f6c533;margin:28px 0 22px;border-radius:99px}
+.coverText h2{font-size:30px;letter-spacing:5px;margin:0 0 28px;color:#071f3d;font-weight:700}
+.datePill{display:inline-flex;align-items:center;gap:14px;background:#08223f;color:white;padding:11px 24px;border-radius:999px;font-size:22px;font-weight:900;box-shadow:0 8px 15px rgba(0,0,0,.2)}
+.calendarIcon{background:#0f7f8f;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px}
+.valueBar{position:absolute;left:70px;bottom:44px;width:720px;background:#08223f;color:white;border-radius:0 28px 0 0;display:grid;grid-template-columns:repeat(3,1fr);padding:26px 28px;gap:18px}
+.valueBar div{border-right:1px solid rgba(255,255,255,.45);padding-right:18px}
+.valueBar div:last-child{border-right:0}
+.valueBar b{display:block;font-size:18px;margin-bottom:5px}
+.valueBar span{font-size:14px;color:#e2e8f0}
+
+/* CONTENT */
+.contentPage{padding:34px 44px}
+.contentHeader{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:5px solid #08223f;padding-bottom:10px}
+.contentHeader h2{font-size:30px;margin:0;color:#08223f}
+.contentHeader p{margin:6px 0 0;color:#475569;font-size:14px}
+.miniBadge{background:#f6c533;color:#422006;font-weight:900;padding:9px 16px;border-radius:999px}
+.infoBox{margin-top:12px;background:#f8fafc;border-left:7px solid #0f7f8f;padding:10px 14px;font-size:14px;line-height:1.35}
+.reportGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.sectionCard{border:1px solid #e2e8f0;border-radius:14px;padding:11px 12px;background:white;box-shadow:0 4px 10px rgba(15,23,42,.05);overflow:hidden}
+.sectionCard.wide{grid-column:span 2}
+.sectionCard h3{margin:0 0 6px;font-size:15px;color:#08223f}
+.sectionCard p{margin:0;font-size:15px;line-height:1.28;text-align:justify;white-space:pre-line;overflow-wrap:anywhere}
+.sectionCard.wide p{max-height:92px;overflow:hidden}
+.sectionCard:not(.wide) p{max-height:170px;overflow:hidden}
+
+/* PHOTO */
+.photoPage{padding:24px 32px;background:#f8fafc}
+.photoHeader{display:flex;justify-content:space-between;align-items:end;margin-bottom:10px;border-bottom:5px solid #08223f;padding-bottom:8px}
+.photoHeader h2{font-size:29px;margin:0;color:#08223f}
+.photoHeader p{margin:0;color:#475569;font-weight:700;font-size:13px}
+.photoGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.photoCard{background:white;border-radius:12px;box-shadow:0 6px 14px rgba(15,23,42,.10);overflow:hidden;border:1px solid #e2e8f0}
+.photo{height:245px;background:#e5e7eb;border:0;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;color:#64748b;font-weight:900;touch-action:none}
+.photo img{width:100%;height:100%;object-fit:cover;display:none;cursor:grab;user-select:none;transform-origin:center center}
+.photo img:active{cursor:grabbing}
+.photo span{position:absolute}
+.photoTools{font-size:10px;color:#64748b;padding:4px 8px;background:#f8fafc;display:flex;gap:6px;align-items:center}
+.photoTools input{height:16px;padding:0}
+.photoDesc{min-height:44px;padding:7px 10px;font-size:12px;line-height:1.22;color:#0f172a;font-weight:700;background:white;white-space:pre-line}
+.captionBox{position:absolute;left:32px;right:32px;bottom:24px;background:#0b1220;color:white;font-size:17px;font-weight:900;line-height:1.08;padding:8px 14px;border-left:10px solid #f6c533;min-height:30px}
+
+@media(max-width:900px){
+  body{background:#0b1220}
+  .app{display:block}
+  .sidebar{height:auto;position:relative;padding:14px}
+  .appHeader{position:sticky;top:0;z-index:10}
+  input,textarea{font-size:16px}
+  .stickyActions{grid-template-columns:1fr 1fr;bottom:0}
+  .btns{grid-template-columns:1fr}
+  .pdf,.drive{grid-column:span 1}
+  .previewArea{background:#d1d5db;padding:12px 0 24px}
+  .phoneTabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;position:sticky;top:0;z-index:9;background:#d1d5db;padding:8px 12px}
+  .phoneTabs button{padding:10px;font-size:12px;background:white;color:#08223f}
+  #pdfArea{width:100%;overflow:hidden}
+  .page{transform:scale(.34);transform-origin:top left;margin:0 0 -520px 10px}
+}
+@media(max-width:430px){
+  .page{transform:scale(.355);margin-left:4px;margin-bottom:-508px}
+}
+@media print{
+  body{background:white}
+  .sidebar,.phoneTabs{display:none}
+  .app{display:block}
+  .previewArea{padding:0}
+  .page{margin:0;box-shadow:none;page-break-after:always;transform:none}
+}
+
+.aiModeStatus{
+  display:inline-block;
+  margin-top:10px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.2px;
+}
+.aiModeStatus.visionOn{
+  background:#22c55e;
+  color:#052e16;
+}
+.aiModeStatus.offlineOn{
+  background:#facc15;
+  color:#422006;
+}
+
+
+/* WELCOME PAGE */
+.welcomePage{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#f8fafc 0%,#ffffff 45%,#e0f2fe 100%);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  padding:24px;
+  transition:opacity .55s ease, visibility .55s ease;
+}
+.welcomePage.hide{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+.welcomeCard{
+  width:min(520px,92vw);
+  text-align:center;
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(148,163,184,.32);
+  border-radius:32px;
+  padding:34px 26px 28px;
+  box-shadow:0 24px 70px rgba(15,23,42,.18);
+  backdrop-filter:blur(12px);
+  animation:welcomeFloat .9s ease both;
+}
+.welcomeLogo{
+  width:min(300px,68vw);
+  border-radius:28px;
+  display:block;
+  margin:0 auto 18px;
+  box-shadow:0 16px 36px rgba(15,23,42,.12);
+  animation:logoPop 1s ease both;
+}
+.welcomeCredit{
+  margin:8px auto 22px;
+  font-size:clamp(13px,2.6vw,16px);
+  line-height:1.45;
+  color:#0f172a;
+  font-weight:700;
+  max-width:430px;
+  animation:creditSlide 1.15s ease .25s both, creditGlow 2.6s ease-in-out 1.4s infinite;
+}
+.enterAppBtn{
+  background:#08223f;
+  color:white;
+  border:none;
+  border-radius:999px;
+  padding:13px 24px;
+  font-weight:900;
+  font-size:14px;
+  cursor:pointer;
+  box-shadow:0 10px 24px rgba(8,34,63,.25);
+  transition:transform .2s ease, filter .2s ease;
+}
+.enterAppBtn:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.08);
+}
+@keyframes welcomeFloat{
+  from{opacity:0;transform:translateY(22px) scale(.96)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes logoPop{
+  0%{opacity:0;transform:scale(.82) rotate(-2deg)}
+  70%{opacity:1;transform:scale(1.03) rotate(0deg)}
+  100%{opacity:1;transform:scale(1)}
+}
+@keyframes creditSlide{
+  from{opacity:0;transform:translateY(12px);letter-spacing:.8px}
+  to{opacity:1;transform:translateY(0);letter-spacing:.15px}
+}
+@keyframes creditGlow{
+  0%,100%{text-shadow:none;color:#0f172a}
+  50%{text-shadow:0 0 16px rgba(14,165,233,.18);color:#075985}
+}
+@media(max-width:520px){
+  .welcomeCard{padding:26px 18px 22px;border-radius:26px}
+  .welcomeLogo{width:72vw;border-radius:24px}
+  .enterAppBtn{width:100%;padding:14px 18px}
+}
+
+
+/* ANIMATED CREDIT LINES */
+.welcomeCredit{
+  text-align:center;
+  line-height:1.62;
+  margin:10px auto 22px;
+}
+
+.welcomeCredit .creditLine{
+  display:inline-block;
+  opacity:0;
+  transform:translateY(12px);
+  animation:creditLineFadeUp .62s ease forwards;
+}
+
+.welcomeCredit .line1{
+  animation-delay:.25s;
+  font-size:clamp(12px,2.4vw,14px);
+  font-weight:700;
+  color:#64748b;
+}
+
+.welcomeCredit .line2{
+  animation-delay:.75s;
+  font-size:clamp(15px,3vw,18px);
+  font-weight:900;
+  color:#08223f;
+}
+
+.welcomeCredit .line3{
+  animation-delay:1.25s;
+  font-size:clamp(13px,2.6vw,16px);
+  font-weight:800;
+  color:#475569;
+}
+
+@keyframes creditLineFadeUp{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+
+/* V18 PDF POLISH */
+.coverLogo{
+  position:absolute;
+  right:92px;
+  top:72px;
+  width:190px;
+  border-radius:28px;
+  box-shadow:0 12px 32px rgba(15,23,42,.10);
+  z-index:3;
+}
+.coverText{
+  z-index:4;
+}
+.coverText h1:empty::before{
+  content:"REPORT PRO VISION";
+}
+.coverText h2:empty::before{
+  content:"AI REPORT GENERATOR";
+}
+.contentHeader h2:empty::before{content:"Isi Kandungan Laporan"}
+.photoHeader h2:empty::before{content:"Gambar Dokumentasi Program"}
+
+body.exporting .sidebar,
+body.exporting .phoneTabs,
+body.exporting .photoTools,
+body.exporting .photo span,
+body.exporting .photoCard.empty,
+body.exporting .captionBox:empty{
+  display:none!important;
+}
+body.exporting .previewArea{
+  padding:0!important;
+  background:white!important;
+}
+body.exporting .page{
+  box-shadow:none!important;
+  margin:0!important;
+  transform:none!important;
+}
+body.exporting #pdfArea{
+  width:1123px!important;
+  margin:0!important;
+}
+body.exporting .photoGrid.one{
+  display:block!important;
+}
+body.exporting .photoGrid.one .photoCard:not(.empty){
+  width:100%!important;
+}
+body.exporting .photoGrid.one .photo{
+  height:560px!important;
+}
+body.exporting .photoGrid.two{
+  grid-template-columns:1fr 1fr!important;
+}
+body.exporting .photoGrid.two .photo{
+  height:500px!important;
+}
+body.exporting .photoGrid.three,
+body.exporting .photoGrid.four{
+  grid-template-columns:1fr 1fr!important;
+}
+body.exporting .photoGrid.three .photo,
+body.exporting .photoGrid.four .photo{
+  height:245px!important;
+}
+body.exporting .photoDesc:empty{
+  display:none!important;
+}
+body.exporting .photoCard{
+  page-break-inside:avoid!important;
+}
+body.exporting .photoPage{
+  padding:28px 36px!important;
+}
+body.exporting .photoHeader{
+  margin-bottom:14px!important;
+}
+body.exporting .pageNum{
+  display:block!important;
+}
+
+
+/* V19 SMART IMAGE LAYOUT */
+.photo{
+  background:#f1f5f9!important;
+}
+.photo img{
+  max-width:100%!important;
+  max-height:100%!important;
+  width:auto!important;
+  height:auto!important;
+  object-fit:contain!important;
+  background:#f1f5f9!important;
+}
+.photo img.img-landscape{
+  width:100%!important;
+  height:auto!important;
+}
+.photo img.img-portrait{
+  width:auto!important;
+  height:100%!important;
+}
+.photo img.img-square{
+  width:auto!important;
+  height:100%!important;
+}
+body.exporting .photoTools,
+body.exporting .photoTools *,
+body.exporting .photo span{
+  display:none!important;
+}
+body.exporting .photo{
+  background:#ffffff!important;
+}
+body.exporting .photo img{
+  object-fit:contain!important;
+  background:#ffffff!important;
+}
+@media print{
+  .photoTools,
+  .photoTools *,
+  .photo span{
+    display:none!important;
+  }
+  .photo img{
+    object-fit:contain!important;
+  }
+}
+
+
+/* V20 RESPONSIVE DEVICE LAYOUT */
+/* Desktop: form/upload panel uses half screen */
+@media (min-width: 1100px){
+  .app{
+    grid-template-columns:minmax(520px, 50vw) 1fr!important;
+  }
+  .sidebar{
+    padding:24px!important;
+  }
+  .stepBox{
+    padding:18px!important;
+  }
+  input,textarea{
+    font-size:16px!important;
+    padding:13px!important;
+  }
+  textarea{
+    min-height:92px!important;
+  }
+  .previewArea{
+    padding:24px!important;
+  }
+  #pdfArea{
+    transform:scale(.78);
+    transform-origin:top center;
+    height:calc(794px * .78 * 3 + 80px);
+  }
+}
+
+/* Medium laptop: balanced layout */
+@media (min-width: 901px) and (max-width: 1099px){
+  .app{
+    grid-template-columns:48vw 1fr!important;
+  }
+  .sidebar{
+    padding:18px!important;
+  }
+  #pdfArea{
+    transform:scale(.62);
+    transform-origin:top center;
+    height:1560px;
+  }
+}
+
+/* Phone/tablet: full-width comfortable typing */
+@media (max-width:900px){
+  .app{
+    display:block!important;
+  }
+  .sidebar{
+    width:100%!important;
+    height:auto!important;
+    min-height:auto!important;
+    position:relative!important;
+    padding:14px!important;
+    overflow:visible!important;
+  }
+  .appHeader{
+    position:relative!important;
+    border-radius:18px!important;
+    margin-bottom:12px!important;
+  }
+  .appHeader h1{
+    font-size:25px!important;
+  }
+  .stepBox{
+    border-radius:16px!important;
+    padding:14px!important;
+    margin-bottom:12px!important;
+  }
+  label{
+    font-size:14px!important;
+    margin-top:14px!important;
+  }
+  input,textarea{
+    font-size:16px!important;
+    padding:14px!important;
+    border-radius:14px!important;
+  }
+  textarea{
+    min-height:108px!important;
+  }
+  .stickyActions{
+    position:sticky!important;
+    bottom:0!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+    padding:10px 0!important;
+    z-index:20!important;
+  }
+  .stickyActions button{
+    font-size:13px!important;
+    min-height:48px!important;
+    padding:10px!important;
+  }
+  .btns{
+    grid-template-columns:1fr 1fr!important;
+  }
+  .pdf,.drive{
+    grid-column:span 2!important;
+  }
+  .previewArea{
+    padding:10px 0 28px!important;
+  }
+  .phoneTabs{
+    display:grid!important;
+    grid-template-columns:repeat(3,1fr)!important;
+    gap:6px!important;
+    position:sticky!important;
+    top:0!important;
+    z-index:15!important;
+    padding:8px 10px!important;
+    background:#d1d5db!important;
+  }
+  .phoneTabs button{
+    background:#fff!important;
+    color:#08223f!important;
+    font-size:12px!important;
+    padding:10px 8px!important;
+  }
+  #pdfArea{
+    width:100%!important;
+    margin:0!important;
+    overflow:hidden!important;
+  }
+  .page{
+    transform:scale(calc((100vw - 16px) / 1123))!important;
+    transform-origin:top left!important;
+    margin-left:8px!important;
+    margin-bottom:calc(-794px + (794px * ((100vw - 16px) / 1123)) + 14px)!important;
+  }
+}
+
+/* Small phones */
+@media (max-width:430px){
+  .sidebar{
+    padding:12px!important;
+  }
+  .appHeader h1{
+    font-size:23px!important;
+  }
+  input,textarea{
+    font-size:16px!important;
+  }
+  textarea{
+    min-height:116px!important;
+  }
+  .stickyActions button{
+    font-size:12px!important;
+  }
+}
+
+/* PDF export: force exact A4 landscape size */
+body.exporting #pdfArea,
+@media print{
+  #pdfArea{
+    transform:none!important;
+  }
+}
+body.exporting .page{
+  transform:none!important;
+  margin:0!important;
+}
+
+/* V22 ENTER FIX */
+.welcomePage.hide{
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+/* V23 BUTTON FIX */
+button:disabled{
+  opacity:.7;
+}
+.aiModeStatus:empty::before{
+  content:"Offline Mode";
+}
+
+
+/* V24 HARD PDF FIX */
+#pdfExportStage .page{
+  width:1123px!important;
+  height:794px!important;
+  margin:0!important;
+  box-shadow:none!important;
+  transform:none!important;
+  page-break-after:always!important;
+}
+#pdfExportStage .photoTools,
+#pdfExportStage .photoTools *,
+#pdfExportStage .phoneTabs{
+  display:none!important;
+}
+#pdfExportStage .photo img{
+  max-width:100%!important;
+  max-height:100%!important;
+  width:auto!important;
+  height:auto!important;
+  object-fit:contain!important;
+}
+#pdfExportStage .photo{
+  background:#f8fafc!important;
+}
+#pdfExportStage .photoGrid.one{
+  display:block!important;
+}
+#pdfExportStage .photoGrid.one .photo{
+  height:560px!important;
+}
+#pdfExportStage .photoGrid.two{
+  grid-template-columns:1fr 1fr!important;
+}
+#pdfExportStage .photoGrid.two .photo{
+  height:500px!important;
+}
+#pdfExportStage .photoGrid.three,
+#pdfExportStage .photoGrid.four{
+  grid-template-columns:1fr 1fr!important;
+}
+#pdfExportStage .photoGrid.three .photo,
+#pdfExportStage .photoGrid.four .photo{
+  height:245px!important;
+}
+
+
+/* V25 PHONE UI POLISH */
+@media (max-width: 900px){
+  body{
+    background:#0b1220!important;
+  }
+
+  .app{
+    display:block!important;
+  }
+
+  .sidebar{
+    width:100%!important;
+    height:auto!important;
+    min-height:auto!important;
+    padding:12px!important;
+    overflow:visible!important;
+    position:relative!important;
+  }
+
+  .appHeader{
+    position:relative!important;
+    top:auto!important;
+    margin-bottom:12px!important;
+    padding:16px!important;
+    border-radius:20px!important;
+  }
+
+  .appHeader h1{
+    font-size:24px!important;
+    line-height:1.1!important;
+  }
+
+  .appHeader p{
+    font-size:13px!important;
+    line-height:1.35!important;
+  }
+
+  .aiModeStatus{
+    margin-top:8px!important;
+    font-size:10px!important;
+    padding:5px 9px!important;
+  }
+
+  .onlineNote{
+    font-size:10px!important;
+    line-height:1.25!important;
+  }
+
+  .stepBox{
+    padding:14px!important;
+    border-radius:18px!important;
+    margin-bottom:12px!important;
+    background:rgba(255,255,255,.085)!important;
+  }
+
+  .stepTitle,
+  summary{
+    font-size:15px!important;
+    line-height:1.25!important;
+  }
+
+  label{
+    font-size:13px!important;
+    margin:12px 0 6px!important;
+  }
+
+  input,
+  textarea{
+    font-size:16px!important;
+    padding:13px 14px!important;
+    border-radius:14px!important;
+  }
+
+  textarea{
+    min-height:96px!important;
+  }
+
+  .sidebar input[type=file]{
+    font-size:13px!important;
+    padding:12px!important;
+    border-radius:14px!important;
+  }
+
+  .stickyActions{
+    position:sticky!important;
+    bottom:0!important;
+    z-index:30!important;
+    background:linear-gradient(180deg,rgba(11,18,32,.2),#0b1220 30%)!important;
+    padding:10px 0 12px!important;
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+  }
+
+  .stickyActions button{
+    min-height:48px!important;
+    font-size:12.5px!important;
+    padding:10px 8px!important;
+    border-radius:14px!important;
+  }
+
+  .btns{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+    padding-bottom:18px!important;
+  }
+
+  .btns button{
+    min-height:46px!important;
+    font-size:12.5px!important;
+  }
+
+  .pdf,
+  .drive{
+    grid-column:span 2!important;
+  }
+
+  .previewArea{
+    background:#e5e7eb!important;
+    padding:10px 0 26px!important;
+  }
+
+  .phoneTabs{
+    display:grid!important;
+    grid-template-columns:repeat(3,1fr)!important;
+    gap:6px!important;
+    position:sticky!important;
+    top:0!important;
+    z-index:25!important;
+    padding:8px 10px!important;
+    background:#e5e7eb!important;
+    border-bottom:1px solid rgba(15,23,42,.08)!important;
+  }
+
+  .phoneTabs button{
+    background:#fff!important;
+    color:#08223f!important;
+    font-size:12px!important;
+    padding:10px 6px!important;
+    border-radius:999px!important;
+    box-shadow:0 3px 10px rgba(15,23,42,.08)!important;
+  }
+
+  #pdfArea{
+    width:100%!important;
+    margin:0!important;
+    overflow:hidden!important;
+  }
+
+  .page{
+    width:1123px!important;
+    height:794px!important;
+    transform:scale(calc((100vw - 20px) / 1123))!important;
+    transform-origin:top left!important;
+    margin-left:10px!important;
+    margin-right:0!important;
+    margin-top:10px!important;
+    margin-bottom:calc(-794px + (794px * ((100vw - 20px) / 1123)) + 18px)!important;
+    box-shadow:0 8px 22px rgba(15,23,42,.18)!important;
+    border-radius:10px!important;
+  }
+
+  .coverPage{
+    border-radius:10px!important;
+  }
+
+  .photoTools{
+    font-size:9px!important;
+  }
+
+  .photoTools input{
+    min-width:80px!important;
+  }
+
+  .welcomeCard{
+    width:92vw!important;
+    padding:24px 18px 22px!important;
+    border-radius:26px!important;
+  }
+
+  .welcomeLogo{
+    width:min(260px,70vw)!important;
+  }
+
+  .welcomeCredit{
+    font-size:13px!important;
+  }
+}
+
+/* Extra small iPhone */
+@media (max-width: 430px){
+  .sidebar{
+    padding:10px!important;
+  }
+
+  .appHeader h1{
+    font-size:22px!important;
+  }
+
+  .stepBox{
+    padding:12px!important;
+  }
+
+  textarea{
+    min-height:104px!important;
+  }
+
+  .stickyActions{
+    grid-template-columns:1fr!important;
+  }
+
+  .stickyActions button{
+    font-size:13px!important;
+  }
+
+  .page{
+    transform:scale(calc((100vw - 12px) / 1123))!important;
+    margin-left:6px!important;
+    margin-bottom:calc(-794px + (794px * ((100vw - 12px) / 1123)) + 16px)!important;
+  }
+}
+
+/* Prevent PDF export from inheriting phone scaling */
+body.exporting .page,
+#pdfExportStage .page{
+  transform:none!important;
+  border-radius:0!important;
+}
+
+
+/* V26 PDF + PHONE DATE FIX */
+.coverLogo{
+  display:none!important;
+}
+
+input[type="date"]{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  -webkit-appearance:none!important;
+  appearance:none!important;
+}
+
+@media(max-width:900px){
+  input[type="date"]{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    font-size:16px!important;
+    padding:13px 14px!important;
+    overflow:hidden!important;
+  }
+}
+
+#pdfExportStage .page{
+  width:1123px!important;
+  height:794px!important;
+  margin:0!important;
+  box-shadow:none!important;
+  transform:none!important;
+  border-radius:0!important;
+  page-break-after:always!important;
+}
+
+#pdfExportStage .coverLogo,
+#pdfExportStage .photoTools,
+#pdfExportStage .photoTools *,
+#pdfExportStage .phoneTabs,
+#pdfExportStage button,
+#pdfExportStage input,
+#pdfExportStage textarea,
+#pdfExportStage .photo span{
+  display:none!important;
+}
+
+#pdfExportStage .photo{
+  background:#f8fafc!important;
+}
+
+#pdfExportStage .photo img{
+  max-width:100%!important;
+  max-height:100%!important;
+  width:auto!important;
+  height:auto!important;
+  object-fit:contain!important;
+  background:#f8fafc!important;
+}
+
+#pdfExportStage .photoGrid.one{
+  display:block!important;
+}
+
+#pdfExportStage .photoGrid.one .photo{
+  height:560px!important;
+}
+
+#pdfExportStage .photoGrid.two{
+  grid-template-columns:1fr 1fr!important;
+}
+
+#pdfExportStage .photoGrid.two .photo{
+  height:500px!important;
+}
+
+#pdfExportStage .photoGrid.three,
+#pdfExportStage .photoGrid.four{
+  grid-template-columns:1fr 1fr!important;
+}
+
+#pdfExportStage .photoGrid.three .photo,
+#pdfExportStage .photoGrid.four .photo{
+  height:245px!important;
+}
+
+body.exporting .page{
+  transform:none!important;
+}
+
+/* V27 HARD REMOVE DRAG TEXT */
+#pdfExportStage .photo span,
+#pdfExportStage .photoTools,
+#pdfExportStage .photoTools *,
+#pdfExportStage .photo::after{
+  display:none !important;
+  content:none !important;
+}

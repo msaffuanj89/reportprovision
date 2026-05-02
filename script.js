@@ -516,7 +516,6 @@ function normalizeForPdf(){
   }
 }
 
-async 
 function classifyImageOrientation(imgId){
   const img = $(imgId);
   if(!img) return;

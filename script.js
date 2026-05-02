@@ -225,7 +225,7 @@ async function aiGenerate(){
   if(aiBtn){ aiBtn.disabled = true; aiBtn.textContent = "Generating..."; }
 
   try{
-    const res = fetchWithTimeout("https://reportprovision.vercel.app/api/vision-generate", {
+    const res = await fetchWithTimeout("https://reportprovision.vercel.app/api/vision-generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)

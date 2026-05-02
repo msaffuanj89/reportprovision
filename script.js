@@ -149,7 +149,7 @@ function smartFallbackDescription(slot){
     return "";
   }
 
-  return `Gambar menunjukkan satu situasi yang dirakam sebagai dokumentasi berkaitan ${program}.`;
+  return "";
 }
 
 function applySmartFallbackDescriptions(){

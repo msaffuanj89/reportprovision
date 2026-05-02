@@ -227,18 +227,18 @@ async function aiGenerate(){
   if(aiBtn){ aiBtn.disabled = true; aiBtn.textContent = "Generating..."; }
 
   try{
-    const res = await fetchWithTimeout("https://reportprovision.vercel.app/api/vision-generate", {
+    const res = fetchWithTimeout("https://reportprovision.vercel.app/api/vision-generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     }, 3500);
 
     if(!res.ok){
-      const err = await res.json().catch(() => ({}));
+      const err = res.json().catch(() => ({}));
       throw new Error(err.error || "AI gambar gagal.");
     }
 
-    const data = await res.json();
+    const data = res.json();
     setAiMode("AI Vision Ready");
 
     $("issue").value = data.issue || "";
@@ -662,9 +662,9 @@ clone.querySelectorAll(".photo").forEach(photo => {
 
       stage.appendChild(clone);
 
-      await new Promise(resolve => requestAnimationFrame(resolve));
+      new Promise(resolve => requestAnimationFrame(resolve));
 
-      const canvas = await html2canvas(clone, {
+      const canvas = html2canvas(clone, {
         scale: 2,
         useCORS: true,
         allowTaint: true,
@@ -718,11 +718,11 @@ function setAiMode(mode){
 function classifyImageOrientation(imgId){
 
   try{
-    const res = await fetch("https://reportprovision.vercel.app/api/health?ts=" + Date.now(), {
+    const res = fetch("https://reportprovision.vercel.app/api/health?ts=" + Date.now(), {
       cache: "no-store"
     });
 
-    const data = await res.json();
+    const data = res.json();
     console.log("AI HEALTH:", data);
 
     if(data.ok || data.visionReady){
@@ -743,14 +743,14 @@ function classifyImageOrientation(imgId){
   const timeoutId = setTimeout(() => controller.abort(), 2500);
 
   try{
-    const res = await fetch(apiUrl("/api/health"), {
+    const res = fetch(apiUrl("/api/health"), {
       cache: "no-store",
       signal: controller.signal
     });
     clearTimeout(timeoutId);
 
     if(res.ok){
-      const data = await res.json().catch(() => ({}));
+      const data = res.json().catch(() => ({}));
      if(data.visionReady || data.ok){
   setAiMode("AI Vision Ready");
   forceEnableMainButtons();

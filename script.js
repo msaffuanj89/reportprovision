@@ -761,7 +761,6 @@ function classifyImageOrientation(imgId){
 
   setAiMode("Offline Mode");
   forceEnableMainButtons();
-  return false;
 }
 
 // Auto-detect quietly on load and every 30 seconds

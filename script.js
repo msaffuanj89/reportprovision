@@ -715,8 +715,7 @@ function setAiMode(mode){
   el.className = "aiModeStatus " + (mode.includes("Vision") ? "visionOn" : "offlineOn");
 }
 
-async function detectAiMode(){
-  forceEnableMainButtons();
+function classifyImageOrientation(imgId){
 
   try{
     const res = await fetch("https://reportprovision.vercel.app/api/health?ts=" + Date.now(), {

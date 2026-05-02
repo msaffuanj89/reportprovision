@@ -78,15 +78,35 @@ function formatDateMalay(value){
 
 function getImageDataUrls(){
   const imgs = [];
+
   ["p1","p2","p3","p4"].forEach((id, idx) => {
     const img = $(id);
+
     if(img && img.src && img.style.display === "block"){
-      imgs.push({ slot: idx + 1, dataUrl: img.src });
+
+      // COMPRESS IMAGE (critical fix)
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      const maxWidth = 800;
+      const scale = Math.min(1, maxWidth / img.naturalWidth);
+
+      canvas.width = img.naturalWidth * scale;
+      canvas.height = img.naturalHeight * scale;
+
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      const compressed = canvas.toDataURL("image/jpeg", 0.6);
+
+      imgs.push({
+        slot: idx + 1,
+        dataUrl: compressed
+      });
     }
   });
+
   return imgs;
 }
-
 function inferProgramContext(programText){
   const p = (programText || "").toLowerCase();
   if(p.includes("karnival") && (p.includes("matematik") || p.includes("math"))){

@@ -736,11 +736,11 @@ async function detectAiMode(){
 
     if(res.ok){
       const data = await res.json().catch(() => ({}));
-      if(data.visionReady){
-        setAiMode("AI Vision Ready");
-        forceEnableMainButtons();
-        return true;
-      }
+     if(data.visionReady || data.ok){
+  setAiMode("AI Vision Ready");
+  forceEnableMainButtons();
+  return true;
+}
     }
   }catch(e){
     clearTimeout(timeoutId);

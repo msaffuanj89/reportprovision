@@ -47,8 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("error", function(e){
   console.warn("Non-critical script error:", e.message);
 });
-const $ = id => document.getElementById(id);
-
 function getApiBaseUrl(){
   const cfg = window.REPORT_PRO_CONFIG || {};
   return (cfg.API_BASE_URL || "").replace(/\/$/, "");

@@ -783,4 +783,17 @@ document.addEventListener("DOMContentLoaded", () => {
   if(enterBtn) enterBtn.addEventListener("click", hideWelcomePage);
   setTimeout(hideWelcomePage, 6000);
 });
-
+function detectAiMode(){
+  fetch(apiUrl("/api/health"))
+    .then(r => r.json())
+    .then(data => {
+      if(data.visionReady){
+        setAiMode("AI Vision Ready");
+      } else {
+        setAiMode("Offline Mode");
+      }
+    })
+    .catch(() => {
+      setAiMode("Offline Mode");
+    });
+}

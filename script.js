@@ -209,7 +209,7 @@ async function aiGenerate(){
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
-    }, 3500);
+    }, 60000);
 
     if(!res.ok){
       const err = res.json().catch(() => ({}));

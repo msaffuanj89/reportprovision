@@ -1,3 +1,4 @@
+const $ = id => document.getElementById(id);
 function uploadedImageCount(){
   return ["p1","p2","p3","p4"].filter(id => {
     const img = $(id);

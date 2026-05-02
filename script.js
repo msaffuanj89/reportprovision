@@ -1,7 +1,3 @@
-
-
-
-
 function uploadedImageCount(){
   return ["p1","p2","p3","p4"].filter(id => {
     const img = $(id);
@@ -231,7 +227,7 @@ async function aiGenerate(){
   if(aiBtn){ aiBtn.disabled = true; aiBtn.textContent = "Generating..."; }
 
   try{
-    const res = await fetch("/api/vision-generate", {
+    const res = await fetchWithTimeout(apiUrl("/api/vision-generate"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)

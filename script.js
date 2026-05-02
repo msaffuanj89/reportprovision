@@ -716,13 +716,29 @@ function setAiMode(mode){
 }
 
 async function detectAiMode(){
-  // AI mode detection is optional. It must never block the app.
   forceEnableMainButtons();
 
-  if(location.protocol === "file:" && !getApiBaseUrl()){
-    setAiMode("Offline Mode");
-    return false;
+  try{
+    const res = await fetch("https://reportprovision.vercel.app/api/health?ts=" + Date.now(), {
+      cache: "no-store"
+    });
+
+    const data = await res.json();
+    console.log("AI HEALTH:", data);
+
+    if(data.ok || data.visionReady){
+      setAiMode("AI Vision Ready");
+      forceEnableMainButtons();
+      return true;
+    }
+  }catch(e){
+    console.error("AI HEALTH FAILED:", e);
   }
+
+  setAiMode("Offline Mode");
+  forceEnableMainButtons();
+  return false;
+}
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 2500);

@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "api/vision-generate.js": {
-      "maxDuration": 60
-    }
-  }
-}

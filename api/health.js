@@ -1,6 +1,5 @@
 export default function handler(req, res) {
-  return res.status(200).json({
-    ok: true,
-    visionReady: Boolean(process.env.OPENAI_API_KEY)
-  });
+  res.setHeader("Content-Type", "application/json");
+  res.statusCode = 200;
+  res.end(JSON.stringify({ ok: true }));
 }

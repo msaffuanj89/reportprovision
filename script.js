@@ -171,28 +171,7 @@ async function aiGenerate(){
   // INSTANT GENERATE MODE:
   // If phone OR many images uploaded, avoid long AI Vision wait.
   // Generate immediately using local template + smart fallback.
-  if(isPhoneDevice() || uploadedImageCount() >= 3){
-    const aiBtn = document.getElementById("aiGenerateBtn");
-    if(aiBtn){
-      aiBtn.disabled = true;
-      aiBtn.textContent = "Generating...";
-    }
-
-    try{
-      templateGenerate();
-      applySmartFallbackDescriptions();
-      updateReport();
-      setAiMode(isPhoneDevice() ? "Phone Fast Mode" : "Instant Mode");
-    }finally{
-      if(aiBtn){
-        aiBtn.disabled = false;
-        aiBtn.textContent = "AI Generate Laporan";
-      }
-      forceEnableMainButtons();
-    }
-    return;
-  }
-
+  
   const images = getImageDataUrls();
   const isServer = location.protocol.startsWith("http") && location.hostname;
 

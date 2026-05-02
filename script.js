@@ -804,30 +804,47 @@ async function aiGenerate(){
   }
 
   try{
+    const images = getImageDataUrls();
+
+    if(images.length === 0){
+      templateGenerate();
+      return;
+    }
+
     const res = await fetch("https://reportprovision.vercel.app/api/vision-generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         program: $("program").value,
         school: $("school").value,
-        images: getImageDataUrls()
+        images: images
       })
     });
+
+    if(!res.ok){
+      throw new Error("Server error");
+    }
 
     const data = await res.json();
     console.log("AI RESULT:", data);
 
-    $("desc1").value = data.desc1 || "";
-    $("desc2").value = data.desc2 || "";
-    $("desc3").value = data.desc3 || "";
-    $("desc4").value = data.desc4 || "";
+    ["1","2","3","4"].forEach(n => {
+      const img = $("p"+n);
+      if(img && img.src){
+        $("desc"+n).value = data["desc"+n] || "";
+      }
+    });
 
     setAiMode("AI Vision Ready");
     updateReport();
 
   }catch(e){
     console.error("AI ERROR:", e);
+
+    // fallback supaya tak kosong
+    templateGenerate();
     setAiMode("Offline Mode");
+
   }finally{
     if(aiBtn){
       aiBtn.disabled = false;

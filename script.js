@@ -728,7 +728,6 @@ function classifyImageOrientation(imgId){
     if(data.ok || data.visionReady){
       setAiMode("AI Vision Ready");
       forceEnableMainButtons();
-      return true;
     }
   }catch(e){
     console.error("AI HEALTH FAILED:", e);
@@ -754,7 +753,6 @@ function classifyImageOrientation(imgId){
      if(data.visionReady || data.ok){
   setAiMode("AI Vision Ready");
   forceEnableMainButtons();
-  return true;
 }
     }
   }catch(e){
